@@ -13,10 +13,13 @@ function ProcessDscLS4pFit(dsc,reason)
 
 screensize = get(0,'ScreenSize');
 
-if strcmpi(reason,'LS4p_only')
-    window_title = 'Four parameter LS sine wave fit';
-else
+
+if strcmpi(reason,'ML5p')
     window_title = 'ML parameter estimation: getting initial estimators';
+elseif strcmpi(reason,'AML')
+    window_title = 'Getting initial estimators for approximate maximum likelihood (AML) estimation';
+else
+    window_title = '4 parameter sine wave fit in LS sense';
 end
 
 %initializing state variables:
@@ -184,18 +187,26 @@ hEditInitialFrValue = uicontrol('Style','edit',...
                                 'Enable','off',...
                                 'Callback',@InitialFrValue_callback);
                     
-if strcmpi(reason,'LS4p_only')
-    hPushButtonProcess = uicontrol ('Style','pushbutton',...
-                                 'String','Perform LS fit and show results',...
-                                 'Units','normalized',...
-                                 'Position',[0.3 0.1 0.4 0.1],...
-                                 'Callback',@ProcessAndShowResults_callback);
-else
+
+if strcmpi(reason,'ML5p')
     hPushButtonProcess =  uicontrol ('Style','pushbutton',...
                                  'String','Get initial estimators and perform ML fit',...
                                  'Units','normalized',...
                                  'Position',[0.3 0.1 0.4 0.1],...
                                  'Callback',@ProcessAndPerformML_callback);
+
+elseif strcmpi(reason,'AML')
+    hPushButtonProcess =  uicontrol ('Style','pushbutton',...
+                                 'String','Get initial estimators for approximate ML (AML) fit',...
+                                 'Units','normalized',...
+                                 'Position',[0.3 0.1 0.4 0.1],...
+                                 'Callback',@ProcessAndPerformAML_callback);
+else
+    hPushButtonProcess = uicontrol ('Style','pushbutton',...
+                                 'String','Perform LS fit and show results',...
+                                 'Units','normalized',...
+                                 'Position',[0.3 0.1 0.4 0.1],...
+                                 'Callback',@ProcessAndShowResults_callback);
 end
                                                                   
 
@@ -312,7 +323,30 @@ end
         ProcessDscML5pFit(dsc,reduced_data,timevect,p);        
     end
 
-        function [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)            
+function ProcessAndPerformAML_callback(source,eventdata)
+        %Pre-processing data
+        [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr);  
+        %In case of user-specified initial frequency estimator        
+        if strcmpi(source_of_initial_fr,'User-specified') 
+            initial_freq = initial_fr_value;
+        end
+       
+        %Fitting sine wave 4p LS sense
+        if strcmpi(method,'AnnexB')
+            [X] = sfit4imp(datavect,timevect,1,initial_freq,'No'); %Initial frequency is given relative to the sample rate
+            p = zeros(4,1);
+            p(1) = X.A*cos(X.phi/180*pi);
+            p(2) = (-1)*X.A*sin(X.phi/180*pi);
+            p(3) = X.DC;
+            p(4) = 2*pi*X.f;
+        else            
+            p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options);
+        end
+        ProcessDscAML(dsc,reduced_data,timevect,p);        
+    end
+
+
+    function [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)
             %Getting initial frequency estimator:
             NFFT = 1e6;
             reduced_data = dsc.data(first_sample:last_sample);            

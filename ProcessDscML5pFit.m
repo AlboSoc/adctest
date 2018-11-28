@@ -390,7 +390,7 @@ UpdateDisplay;
     end
 
     function Compare_callback(source,eventdata)
-        CompareLSvsML(dsc,reduced_data,timevect,pLS,p,INL);
+        CompareLSvsML(dsc,reduced_data,timevect,pLS,p,INL,hess);
     end
 
     function RunIterations %Core of iterations

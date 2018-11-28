@@ -18,6 +18,10 @@ if isfield(dsc,'data') && isfield (dsc,'NoB') %Valid descriptor
     classresults.ML_warn = {'Warning message';'for ML fit'};
     classresults.ML_error = {'Error message';'for ML fit'};
     
+    classresults.AML_app = 'OK';
+    classresults.AML_warn = {'Warning message';'for AML fit'};
+    classresults.AML_error = {'Error message';'for AML fit'};
+    
     %Looking for trivial errors
     if (max(dsc.data) > 2^dsc.NoB - 1)... 
             || (min(dsc.data) < 0) % Out of scale        
@@ -25,19 +29,23 @@ if isfield(dsc,'data') && isfield (dsc,'NoB') %Valid descriptor
         classresults.FFT_app = 'Error';
         classresults.Hist_app = 'Error';
         classresults.ML_app = 'Error';
+        classresults.AML_app = 'Error';        
         classresults.LS_error = {'Invalid measurement record';'mismatch between codes and numer of bits';'Use unsigned code notation: the codes shall be between 0 and 2^b-1'};
         classresults.FFT_error = {'Invalid measurement record';'mismatch between codes and numer of bits';'Use unsigned code notation: the codes shall be between 0 and 2^b-1'};
         classresults.Hist_error = {'Invalid measurement record';'mismatch between codes and numer of bits';'Use unsigned code notation: the codes shall be between 0 and 2^b-1'};
         classresults.ML_error = {'Invalid measurement record';'mismatch between codes and numer of bits';'Use unsigned code notation: the codes shall be between 0 and 2^b-1'};
+        classresults.AML_error = {'Invalid measurement record';'mismatch between codes and numer of bits';'Use unsigned code notation: the codes shall be between 0 and 2^b-1'};        
     elseif ~isempty(find((round(dsc.data) ~= dsc.data),1)) %Not integer code value found
         classresults.LS_app = 'Error';
         classresults.FFT_app = 'Error';
         classresults.Hist_app = 'Error';
         classresults.ML_app = 'Error';
+        classresults.AML_app = 'Error';        
         classresults.LS_error = {'Invalid measurement record';'ADC codes shall be integer values'};
         classresults.FFT_error = {'Invalid measurement record';'ADC codes shall be integer values'};
         classresults.Hist_error = {'Invalid measurement record';'ADC codes shall be integer values'};
         classresults.ML_error = {'Invalid measurement record';'ADC codes shall be integer values'};
+        classresults.AML_error = {'Invalid measurement record';'ADC codes shall be integer values'};
     end
 
     %Setting warnings:
@@ -52,7 +60,10 @@ if isfield(dsc,'data') && isfield (dsc,'NoB') %Valid descriptor
         classresults.LS_app = 'Warning';
         classresults.LS_warn = {'Less than 5 full cycles of sine wave';'LS fit can be mislead'};
         classresults.ML_app = 'Warning';
-        classresults.ML_warn = {'Less than 5 full cycles of sine wave';'LS fit can be mislead'};
+        classresults.ML_warn = {'Less than 5 full cycles of sine wave';'ML fit can be mislead'};
+        classresults.AML_app = 'Warning';
+        classresults.AML_warn = {'Less than 5 full cycles of sine wave';'ML fit can be mislead'};
+
     end
     
     %Examining overdirve:
@@ -66,11 +77,17 @@ if isfield(dsc,'data') && isfield (dsc,'NoB') %Valid descriptor
         classresults.FFT_warn = {'The excitation signal seemingly overdrives the ADC under test';'Harmonic distortion can be result of saturation instead of nonlinearity'};
         classresults.ML_app = 'Warning';
         classresults.ML_warn = {'The excitation signal seemingly overdrives the ADC under test';'Use amplitude limits to discard overdriven part in LS fit'};        
+        classresults.AML_app = 'Warning';
+        classresults.AML_warn = {'The excitation signal seemingly overdrives the ADC under test';'Use amplitude limits to discard overdriven part in LS fit'};        
+    
     else %Not orverdiven
         classresults.Hist_app = 'Warning';
-        classresults.Hist_warning = {'ADC under test is not overiven';'Transition levels outside the excitation range cannot be estimated'};
+        classresults.Hist_warn = {'ADC under test is not overiven';'Transition levels outside the excitation range cannot be estimated'};
         classresults.ML_app = 'Warning';
-        classresults.ML_warning = {'ADC under test is not overiven';'Transition levels outside the excitation range cannot be estimated'};        
+        classresults.ML_warn = {'ADC under test is not overiven';'Transition levels outside the excitation range cannot be estimated'};        
+        classresults.AML_app = 'Warning';
+        classresults.AML_warn = {'ADC under test is not overiven';'Transition levels outside the excitation range cannot be estimated'};        
+
     end    
     
     %Number of samples per code bin:
@@ -87,6 +104,8 @@ if isfield(dsc,'data') && isfield (dsc,'NoB') %Valid descriptor
         classresults.Hist_warn = {'Ratio of fractional periods in record is higher than 1%';'Incoherence may mislead histogram test'};
         classresults.ML_app = 'Warning';
         classresults.ML_warn = {'Ratio of fractional periods in record is higher than 1%';'Incoherence may mislead histogram test'};
+        classresults.AML_app = 'Warning';
+        classresults.AML_warn = {'Ratio of fractional periods in record is higher than 1%';'Incoherence may mislead histogram test'};
     end
 
 else %Descriptor is invalid
@@ -94,9 +113,10 @@ else %Descriptor is invalid
     classresults.FFT_app = 'Error';
     classresults.Hist_app = 'Error';
     classresults.ML_app = 'Error';
+    classresults.AML_app = 'Error';
     classresults.LS_error = {'Invalid measurement descriptor'};
     classresults.FFT_error = {'Invalid measurement descriptor'};    
     classresults.Hist_error = {'Invalid measurement descriptor'};        
-    classresults.ML_error = {'Invalid measurement descriptor'};    
+    classresults.AML_error = {'Invalid measurement descriptor'};    
 end
 end

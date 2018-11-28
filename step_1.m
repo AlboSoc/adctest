@@ -22,7 +22,7 @@ function varargout = step_1(varargin)
 
 % Edit the above text to modify the response to help step_1
 
-% Last Modified by GUIDE v2.5 19-Nov-2014 13:29:25
+% Last Modified by GUIDE v2.5 29-Mar-2017 08:31:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,28 +78,28 @@ if (isstruct(varargin{1}) && (isfield(varargin{1},'data'))) %first commmand line
         set(handles.pushbutton_showerrors_1,'Enable','off');
         set(handles.text_LS_app,'String','Appopriate');
         set(handles.text_LS_app,'ForegroundColor',color_green);
-        set(handles.pushbutton_process_ls,'Enable','on');
+        set(handles.pushbutton_process_LS,'Enable','on');
         
     elseif strcmpi(classresults.LS_app,'Warning')
         set(handles.pushbutton_showwarns_1,'Enable','on');
         set(handles.pushbutton_showerrors_1,'Enable','off');
         set(handles.text_LS_app,'String','With restrictions');
         set(handles.text_LS_app,'ForegroundColor',color_orange);        
-        set(handles.pushbutton_process_ls,'Enable','on');
+        set(handles.pushbutton_process_LS,'Enable','on');
         
     elseif strcmpi(classresults.LS_app,'Error')
         set(handles.pushbutton_showwarns_1,'Enable','off');
         set(handles.pushbutton_showerrors_1,'Enable','on');
         set(handles.text_LS_app,'String','Inappropriate');
         set(handles.text_LS_app,'ForegroundColor',color_red);        
-        set(handles.pushbutton_process_ls,'Enable','off');
+        set(handles.pushbutton_process_LS,'Enable','off');
         
     else
         set(handles.pushbutton_showwarns_1,'Enable','off');
         set(handles.pushbutton_showerrors_1,'Enable','off');
         set(handles.text_LS_app,'String','Undefined');
         set(handles.text_LS_app,'ForegroundColor',[0.5 0.5 0.5]);        
-        set(handles.pushbutton_process_ls,'Enable','off');        
+        set(handles.pushbutton_process_LS,'Enable','off');        
     end
 
     if strcmpi(classresults.FFT_app,'OK')
@@ -107,27 +107,27 @@ if (isstruct(varargin{1}) && (isfield(varargin{1},'data'))) %first commmand line
         set(handles.pushbutton_showerrors_2,'Enable','off');
         set(handles.text_FFT_app,'String','Appopriate');
         set(handles.text_FFT_app,'ForegroundColor',color_green);        
-        set(handles.pushbutton_process_fft,'Enable','on');
+        set(handles.pushbutton_process_FFT,'Enable','on');
         
     elseif strcmpi(classresults.FFT_app,'Warning')
         set(handles.pushbutton_showwarns_2,'Enable','on');
         set(handles.pushbutton_showerrors_2,'Enable','off');
         set(handles.text_FFT_app,'String','With restrictions');
         set(handles.text_FFT_app,'ForegroundColor',color_orange);        
-        set(handles.pushbutton_process_fft,'Enable','on');        
+        set(handles.pushbutton_process_FFT,'Enable','on');        
         
     elseif strcmpi(classresults.FFT_app,'Error')
         set(handles.pushbutton_showwarns_2,'Enable','off');
         set(handles.pushbutton_showerrors_2,'Enable','on');
         set(handles.text_FFT_app,'String','Inappropriate');
         set(handles.text_FFT_app,'ForegroundColor',color_red);        
-        set(handles.pushbutton_process_fft,'Enable','off');        
+        set(handles.pushbutton_process_FFT,'Enable','off');        
     else
         set(handles.pushbutton_showwarns_2,'Enable','off');
         set(handles.pushbutton_showerrors_2,'Enable','off');
         set(handles.text_FFT_app,'String','Undefined');
         set(handles.text_FFT_app,'ForegroundColor',[0.5 0.5 0.5]);
-        set(handles.pushbutton_process_fft,'Enable','off');        
+        set(handles.pushbutton_process_FFT,'Enable','off');        
     end
     
     if strcmpi(classresults.Hist_app,'OK')
@@ -162,30 +162,59 @@ if (isstruct(varargin{1}) && (isfield(varargin{1},'data'))) %first commmand line
     if strcmpi(classresults.ML_app,'OK')
         set(handles.pushbutton_showwarns_4,'Enable','off');
         set(handles.pushbutton_showerrors_4,'Enable','off');
-        set(handles.text_Hist_app,'String','Appopriate');
-        set(handles.text_Hist_app,'ForegroundColor',color_green);        
-        set(handles.pushbutton_process_ml,'Enable','on');   
+        set(handles.text_ML_app,'String','Appopriate');
+        set(handles.text_ML_app,'ForegroundColor',color_green);        
+        set(handles.pushbutton_process_ML,'Enable','on');   
         
     elseif strcmpi(classresults.ML_app,'Warning')
         set(handles.pushbutton_showwarns_4,'Enable','on');
         set(handles.pushbutton_showerrors_4,'Enable','off');
         set(handles.text_ML_app,'String','With restrictions');
         set(handles.text_ML_app,'ForegroundColor',color_orange);                
-        set(handles.pushbutton_process_ml,'Enable','on');        
+        set(handles.pushbutton_process_ML,'Enable','on');        
         
     elseif strcmpi(classresults.ML_app,'Error')
         set(handles.pushbutton_showwarns_4,'Enable','off');
         set(handles.pushbutton_showerrors_4,'Enable','on');
         set(handles.text_ML_app,'String','Inappropriate');
         set(handles.text_ML_app,'ForegroundColor',color_red);                
-        set(handles.pushbutton_process_ml,'Enable','off');        
+        set(handles.pushbutton_process_ML,'Enable','off');        
         
     else
         set(handles.pushbutton_showwarns_4,'Enable','off');
         set(handles.pushbutton_showerrors_4,'Enable','off');
         set(handles.text_ML_app,'String','Undefined');
         set(handles.text_ML_app,'ForegroundColor',[0.5 0.5 0.5]);
-        set(handles.pushbutton_process_ml,'Enable','off');        
+        set(handles.pushbutton_process_ML,'Enable','off');        
+    end
+
+    if strcmpi(classresults.AML_app,'OK')
+        set(handles.pushbutton_showwarns_5,'Enable','off');
+        set(handles.pushbutton_showerrors_5,'Enable','off');
+        set(handles.text_AML_app,'String','Appopriate');
+        set(handles.text_AML_app,'ForegroundColor',color_green);        
+        set(handles.pushbutton_process_AML,'Enable','on');   
+        
+    elseif strcmpi(classresults.AML_app,'Warning')
+        set(handles.pushbutton_showwarns_5,'Enable','on');
+        set(handles.pushbutton_showerrors_5,'Enable','off');
+        set(handles.text_AML_app,'String','With restrictions');
+        set(handles.text_AML_app,'ForegroundColor',color_orange);                
+        set(handles.pushbutton_process_AML,'Enable','on');        
+        
+    elseif strcmpi(classresults.AML_app,'Error')
+        set(handles.pushbutton_showwarns_5,'Enable','off');
+        set(handles.pushbutton_showerrors_5,'Enable','on');
+        set(handles.text_AML_app,'String','Inappropriate');
+        set(handles.text_AML_app,'ForegroundColor',color_red);                
+        set(handles.pushbutton_process_AML,'Enable','off');        
+        
+    else
+        set(handles.pushbutton_showwarns_5,'Enable','off');
+        set(handles.pushbutton_showerrors_5,'Enable','off');
+        set(handles.text_AML_app,'String','Undefined');
+        set(handles.text_AML_app,'ForegroundColor',[0.5 0.5 0.5]);
+        set(handles.pushbutton_process_AML,'Enable','off');        
     end
     
     %Examining Coherence
@@ -313,6 +342,14 @@ function pushbutton_showwarns_4_Callback(hObject, eventdata, handles)
 classresults = getappdata(get(0,'CurrentFigure'),'classresults');
 warndlg(classresults.ML_warn,'Warnings for ML fit');
 
+% --- Executes on button press in pushbutton_showwarns_5.
+function pushbutton_showwarns_5_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showwarns_5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+warndlg(classresults.AML_warn,'Warnings for AML fit');
+
 % --- Executes on button press in pushbutton_showerrors_1.
 function pushbutton_showerrors_1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_showerrors_1 (see GCBO)
@@ -348,19 +385,27 @@ function pushbutton_showerrors_4_Callback(hObject, eventdata, handles)
 classresults = getappdata(get(0,'CurrentFigure'),'classresults');
 errordlg(classresults.ML_error,'Errors for ML fit');
 
+% --- Executes on button press in pushbutton_showerrors_5.
+function pushbutton_showerrors_5_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showerrors_5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+errordlg(classresults.AML_error,'Errors for AML fit');
 
-% --- Executes on button press in pushbutton_process_ls.
-function pushbutton_process_ls_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_process_ls (see GCBO)
+
+% --- Executes on button press in pushbutton_process_LS.
+function pushbutton_process_LS_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_LS (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 dsc = getappdata(get(0,'CurrentFigure'),'dsc');
 ProcessDscLS4pFit(dsc,'LS4p_only'); %To perform only LS fit without ML
 
 
-% --- Executes on button press in pushbutton_process_fft.
-function pushbutton_process_fft_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_process_fft (see GCBO)
+% --- Executes on button press in pushbutton_process_FFT.
+function pushbutton_process_FFT_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_FFT (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 dsc = getappdata(get(0,'CurrentFigure'),'dsc');
@@ -385,14 +430,21 @@ selected_dsc.data = selection;
 ProcessHistogramTest(selected_dsc,display_settings,estimate_ratio,edge_cut);
 
 
-% --- Executes on button press in pushbutton_process_ml.
-function pushbutton_process_ml_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_process_ml (see GCBO)
+% --- Executes on button press in pushbutton_process_ML.
+function pushbutton_process_ML_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_ML (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 dsc = getappdata(get(0,'CurrentFigure'),'dsc');
-ProcessDscLS4pFit(dsc,'ML_fit'); %To ML fit with LS initials
+ProcessDscLS4pFit(dsc,'ML5p'); %To ML fit with LS initials
 
+% --- Executes on button press in pushbutton_process_AML.
+function pushbutton_process_AML_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_AML (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+ProcessDscLS4pFit(dsc,'AML'); %To AML fit with LS results as initial estimators
 
 % --- Executes on button press in pushbutton_export_to_HTML.
 function pushbutton_export_to_HTML_Callback(hObject, eventdata, handles)
@@ -538,4 +590,5 @@ fill(x_values,y_values,color_fill);
 hold off;
 
 set(0,'CurrentFigure',oldfig);
+
 

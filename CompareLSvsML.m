@@ -1,4 +1,4 @@
-function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL)
+function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL,hess)
 % @fn CompareLSvsML
 % @brief Compares the results of LS and ML fit, and displays the difference
 %        in a comparative window
@@ -29,7 +29,7 @@ comparison_window = figure('Name','Comparison of ML and LS estimators',...
 
 hFrameDivider  = uicontrol('Style','frame',...
     'Units','normalized',...
-    'Position',[0.5 0 1e-3 1]);
+    'Position',[0.5 0.1 1e-3 0.9]);
 
 hTextMLTitle = uicontrol('Style','text',...
     'Units','normalized',...
@@ -450,6 +450,12 @@ hPopupMenuPlot2Selector = uicontrol('Style','popupmenu',...
     'String',{'Histogram'},...
     'Callback',@Plot2Selector_callback);
 
+hPushButtonShowCRLB = uicontrol ('Style','pushbutton',...
+                                 'String','Show CRLB',...
+                                 'Units','normalized',...
+                                 'Position',[0.4 0.025 0.2 0.05],...
+                                 'Callback',@ShowCRLB_callback);
+
 % hPopupMenuDomainSelector = uicontrol('Style','popupmenu',...
 %     'Units','normalized',...
 %     'Position',[0.9 0.9 0.1 0.05],...
@@ -503,6 +509,35 @@ end
 %Calculating reference sine wave for mod t plot
 reference_sinewave_ML = (max_axis_residuals - min_axis_residuals)*0.4/sqrt(ML_params(1)^2 + ML_params(2)^2)*(ML_params(1)*cos(ML_TimeModT_sorted) + ML_params(2)*sin(ML_TimeModT_sorted));
 reference_sinewave_LS = (max_axis_residuals - min_axis_residuals)*0.4/sqrt(ML_params(1)^2 + ML_params(2)^2)*(ML_params(1)*cos(ML_TimeModT_sorted) + ML_params(2)*sin(ML_TimeModT_sorted));
+
+%Calculating components of the CRLB
+FisherInformation = inv(hess);
+CRLB.A = FisherInformation(1,1);
+CRLB.B = FisherInformation(2,2);
+CRLB.C = FisherInformation(3,3);
+CRLB.theta = FisherInformation(4,4);
+CRLB.sigma = FisherInformation(5,5);
+
+%Calculating other CRLBs
+%Amplitude
+c_A_A = ML_params(1)/sqrt(ML_params(1)^2 + ML_params(2)^2);
+c_A_B = ML_params(2)/sqrt(ML_params(1)^2 + ML_params(2)^2);
+CRLB.amplitude = c_A_A^2*CRLB.A + c_A_B^2*CRLB.B;
+
+c_phi_A = (-ML_params(2))/(ML_params(1)^2 + ML_params(2)^2);
+c_phi_B =  (ML_params(1))/(ML_params(1)^2 + ML_params(2)^2);
+CRLB.phase = c_phi_A^2*CRLB.A + c_phi_B^2*CRLB.B;
+
+%Converting CRLB values to LSB, deg, f/fs
+CRLB.A = CRLB.A*(2^dsc.NoB - 2);
+CRLB.B = CRLB.B*(2^dsc.NoB - 2);
+CRLB.C = CRLB.C*(2^dsc.NoB - 2);
+CRLB.theta = CRLB.theta/(2*pi);         %2*pi*f/fs -> f/fs
+CRLB.sigma = CRLB.sigma*(2^dsc.NoB - 2);
+CRLB.amplitude = CRLB.amplitude*(2^dsc.NoB - 2);
+CRLB.phase = CRLB.phase/pi*180;         %RAD -> DEG
+
+
 
 %Setting display:
 axes(hAxesMLPlot1);
@@ -610,6 +645,10 @@ end
     function Plot2Selector_callback(source,eventdata)
         plot2_state = get(source,'Value');
         UpdateDisplay;
+    end
+
+    function ShowCRLB_callback(source,eventdata)
+        ShowCRLB(CRLB);
     end
 
 
