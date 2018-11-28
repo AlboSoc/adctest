@@ -240,7 +240,7 @@ uiwait(add_new_dsc_window); %Blocks execution (and return) until either OK or Ca
                 new_dsc.data = evalin('base',wsp_variable_name{1});
                 axes(hAxesToPlotData);
                 plot(1:length(new_dsc.data),new_dsc.data);
-                set(hTextInfo,'String','Measurement data has been imported succesfully');
+                set(hTextInfo,'String','Measurement data has been imported successfully');
                 set(hTextInfo,'BackgroundColor','Green');
                 new_dsc.simulation = 0;
             catch

@@ -22,7 +22,7 @@ function varargout = step_1(varargin)
 
 % Edit the above text to modify the response to help step_1
 
-% Last Modified by GUIDE v2.5 29-Mar-2017 08:31:01
+% Last Modified by GUIDE v2.5 28-Nov-2018 20:56:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -590,5 +590,3 @@ fill(x_values,y_values,color_fill);
 hold off;
 
 set(0,'CurrentFigure',oldfig);
-
-

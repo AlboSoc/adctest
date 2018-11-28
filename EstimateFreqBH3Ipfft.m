@@ -1,11 +1,11 @@
 function f = EstimateFreqBH3Ipfft(x,varargin)
 % @fn EstimateFreqBH3Ipfft
-% @brief Estimates the frequency of the input signal using different windowa in time domnain, and paraboloc interpolation in
+% @brief Estimates the frequency of the input signal using different windows in time domnain, and parabolic interpolation in
 %       frequency domain
 % @param x The vector of the sampled (and quantized) signal
 % @param varargin 
 %        NFFT: length of DFT can be specified optionally
-%              deafult value is 1E6
+%              default value is 1E6
 %        source_of_initial_fr: specifies the window to be used
 %            possible values:
 %               'FFT'

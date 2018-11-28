@@ -264,7 +264,7 @@ ProcessData;
         end
         %Calculating SFDR:
         max_harmonic_distortion = 20*log10(max(H(2:end)));
-        %Discarding main lobe from spourious components:
+        %Discarding main lobe from spurious components:
         %Windows' main lobe is no more than DFT bins wide, thus
         %N_FFT/N*5 samples shall be discarded to calculate SFDR
         max_spur = max([half_side(1:index_max-round(5*N_FFT/N));half_side(index_max+round(5*N_FFT/N):end)]);
